@@ -104,42 +104,47 @@ class Connections:
                 self.connections[i, j] += learning_rate * output_layer.error[j] * input_layer.nodes[i]
 
 # Define out network
-my_network = Network("3 layer NN", 1)
+my_network = Network("3 layer NN", 2)
 # set up our nodes
-input_layer = NodeLayer(2)
-hidden_layer = NodeLayer(3)
-output_layer = NodeLayer(1)
+input_layer = NodeLayer(5)
+hidden_layer = NodeLayer(10)
+output_layer = NodeLayer(5)
 # set up our connections and then give them random values
-connect_in_hid = Connections(2,3) # create first layer of weights
-connect_hid_out = Connections(3,1) # create first layer of weights
+connect_in_hid = Connections(5,10) # create first layer of weights
+connect_hid_out = Connections(10,5) # create first layer of weights
 # set two sets of connections to random
 connect_in_hid.gen_random()
 connect_hid_out.gen_random()
 
 
-# define our training sequence
-my_network.training_set(np.array([0.5, 0.25]), np.array([1.0]))
+in1 = np.array([0.1, 0.2, 0.3, 0.4, 0.5])
+in2 = np.array([0.1, 0.1, 0.1, 0.1, 0.1])
+out1 = np.array([0, 0, 0, 0, 1])
+out2 = np.array([0, 0, 1, 0, 0])
 
-input_layer.nodes = my_network.training_input
+# define our training sequence
+my_network.training_set(np.array([in1, in2]), np.array([out1, out2]))
 
 output_list = [] # list to store outputs
 error_list = [] # this is a list to store the errors so we can watch them decrease
 
-for i in range(0,5):
+for i in range(0,2000):
+    # give it input1
+    input_layer.nodes = my_network.training_input[0]
     hidden_layer = connect_in_hid.forward_propogation(input_layer)
     output_layer = connect_hid_out.forward_propogation(hidden_layer)
 
-    print "ITERATION: ", i, "\n"
+#    print "ITERATION: ", i, "\n"
 
     # print out the network
-    print "INPUT LAYER:\n", input_layer.nodes
-    print "CONNECTIONS INPUT->HIDDEN:\n", connect_in_hid.connections
-    print "HIDDEN LAYER:\n", hidden_layer.nodes 
-    print "CONNECTION HIDDEN->OUTPUT:\n", connect_hid_out.connections 
-    print "OUTPUT LAYER\n", output_layer.nodes, "\n\n"
+#    print "INPUT LAYER:\n", input_layer.nodes
+#    print "CONNECTIONS INPUT->HIDDEN:\n", connect_in_hid.connections
+#    print "HIDDEN LAYER:\n", hidden_layer.nodes 
+#    print "CONNECTION HIDDEN->OUTPUT:\n", connect_hid_out.connections 
+#    print "OUTPUT LAYER\n", output_layer.nodes, "\n\n"
 
     #calculate the error associated with each node
-    output_layer.error = my_network.calc_error_output(output_layer,my_network.training_output).error
+    output_layer.error = my_network.calc_error_output(output_layer,my_network.training_output[0]).error
     hidden_layer.error = my_network.calc_error_hidden(hidden_layer, output_layer, connect_hid_out).error
 
     # update the weights
@@ -147,15 +152,71 @@ for i in range(0,5):
     connect_hid_out.update_connection_weights(my_network.learning_rate, hidden_layer, output_layer)
 
     #return errors
-    print "HIDDEN ERROR", hidden_layer.error
-    print "OUTPUT ERROR", output_layer.error, "\n\n"
-    error_list.append(output_layer.error[0])
-    output_list.append(output_layer.nodes[0])
+#    print "HIDDEN ERROR", hidden_layer.error
+#    print "OUTPUT ERROR", output_layer.error, "\n\n"
+#    error_list.append(output_layer.error)
+#    output_list.append(output_layer.nodes)
+
+    # give it input2
+    input_layer.nodes = my_network.training_input[1]
+    hidden_layer = connect_in_hid.forward_propogation(input_layer)
+    output_layer = connect_hid_out.forward_propogation(hidden_layer)
+
+#    print "ITERATION: ", i, "\n"
+
+    # print out the network
+#    print "INPUT LAYER:\n", input_layer.nodes
+#    print "CONNECTIONS INPUT->HIDDEN:\n", connect_in_hid.connections
+#    print "HIDDEN LAYER:\n", hidden_layer.nodes 
+#    print "CONNECTION HIDDEN->OUTPUT:\n", connect_hid_out.connections 
+#    print "OUTPUT LAYER\n", output_layer.nodes, "\n\n"
+
+    #calculate the error associated with each node
+    output_layer.error = my_network.calc_error_output(output_layer,my_network.training_output[1]).error
+    hidden_layer.error = my_network.calc_error_hidden(hidden_layer, output_layer, connect_hid_out).error
+
+    # update the weights
+    connect_in_hid.update_connection_weights(my_network.learning_rate, input_layer, hidden_layer)
+    connect_hid_out.update_connection_weights(my_network.learning_rate, hidden_layer, output_layer)
+
+#    error_list.append(output_layer.error)
+#    output_list.append(output_layer.nodes)
+
 # print out the entire error
 
-print "I: ERROR, OUTPUT"
-for i in range(0, len(error_list)):
-    print i, ": ", error_list[i], ", ", output_list[i]
+#print "I: ERROR, OUTPUT"
+#for i in range(0, len(error_list)):
+#    print i, error_list[i], output_list[i]
 
-print "\n\nINPUT LAYER:\n", input_layer.nodes
+print "\n\nINPUT LAYER:\n", my_network.training_input
 print "TARGET OUTPUT\n", my_network.training_output
+
+# Forward prop with first input
+input_layer.nodes = my_network.training_input[0]
+hidden_layer = connect_in_hid.forward_propogation(input_layer)
+output_layer = connect_hid_out.forward_propogation(hidden_layer)
+print "INPUT LAYER:\n", input_layer.nodes
+print "CONNECTIONS INPUT->HIDDEN:\n", connect_in_hid.connections
+print "HIDDEN LAYER:\n", hidden_layer.nodes 
+print "CONNECTION HIDDEN->OUTPUT:\n", connect_hid_out.connections 
+print "OUTPUT LAYER\n", np.around(output_layer.nodes, decimals=2), "\n\n"    
+
+# Forward prop with second input
+input_layer.nodes = my_network.training_input[1]
+hidden_layer = connect_in_hid.forward_propogation(input_layer)
+output_layer = connect_hid_out.forward_propogation(hidden_layer)
+print "INPUT LAYER:\n", input_layer.nodes
+print "CONNECTIONS INPUT->HIDDEN:\n", connect_in_hid.connections
+print "HIDDEN LAYER:\n", hidden_layer.nodes 
+print "CONNECTION HIDDEN->OUTPUT:\n", connect_hid_out.connections 
+print "OUTPUT LAYER\n", np.around(output_layer.nodes, decimals=2), "\n\n"    
+
+# Forward prop with input to check generalisation
+input_layer.nodes = np.array([0.1,0.2,0.2,0.4,0.5])
+hidden_layer = connect_in_hid.forward_propogation(input_layer)
+output_layer = connect_hid_out.forward_propogation(hidden_layer)
+print "INPUT LAYER:\n", input_layer.nodes
+print "CONNECTIONS INPUT->HIDDEN:\n", connect_in_hid.connections
+print "HIDDEN LAYER:\n", hidden_layer.nodes 
+print "CONNECTION HIDDEN->OUTPUT:\n", connect_hid_out.connections 
+print "OUTPUT LAYER\n", np.around(output_layer.nodes, decimals=2), "\n\n"    
