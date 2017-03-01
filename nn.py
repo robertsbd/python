@@ -188,35 +188,35 @@ for i in range(0,2000):
 #for i in range(0, len(error_list)):
 #    print i, error_list[i], output_list[i]
 
-print "\n\nINPUT LAYER:\n", my_network.training_input
-print "TARGET OUTPUT\n", my_network.training_output
+print("\n\nINPUT LAYER:\n", my_network.training_input)
+print("TARGET OUTPUT\n", my_network.training_output)
 
 # Forward prop with first input
 input_layer.nodes = my_network.training_input[0]
 hidden_layer = connect_in_hid.forward_propogation(input_layer)
 output_layer = connect_hid_out.forward_propogation(hidden_layer)
-print "INPUT LAYER:\n", input_layer.nodes
-print "CONNECTIONS INPUT->HIDDEN:\n", connect_in_hid.connections
-print "HIDDEN LAYER:\n", hidden_layer.nodes 
-print "CONNECTION HIDDEN->OUTPUT:\n", connect_hid_out.connections 
-print "OUTPUT LAYER\n", np.around(output_layer.nodes, decimals=2), "\n\n"    
+print("INPUT LAYER:\n", input_layer.nodes)
+print("CONNECTIONS INPUT->HIDDEN:\n", connect_in_hid.connections)
+print("HIDDEN LAYER:\n", hidden_layer.nodes) 
+print("CONNECTION HIDDEN->OUTPUT:\n", connect_hid_out.connections) 
+print("OUTPUT LAYER\n", np.around(output_layer.nodes, decimals=2), "\n\n")    
 
 # Forward prop with second input
 input_layer.nodes = my_network.training_input[1]
 hidden_layer = connect_in_hid.forward_propogation(input_layer)
 output_layer = connect_hid_out.forward_propogation(hidden_layer)
-print "INPUT LAYER:\n", input_layer.nodes
-print "CONNECTIONS INPUT->HIDDEN:\n", connect_in_hid.connections
-print "HIDDEN LAYER:\n", hidden_layer.nodes 
-print "CONNECTION HIDDEN->OUTPUT:\n", connect_hid_out.connections 
-print "OUTPUT LAYER\n", np.around(output_layer.nodes, decimals=2), "\n\n"    
+print("INPUT LAYER:\n", input_layer.nodes)
+print("CONNECTIONS INPUT->HIDDEN:\n", connect_in_hid.connections)
+print("HIDDEN LAYER:\n", hidden_layer.nodes) 
+print("CONNECTION HIDDEN->OUTPUT:\n", connect_hid_out.connections) 
+print("OUTPUT LAYER\n", np.around(output_layer.nodes, decimals=2), "\n\n")        
 
 # Forward prop with input to check generalisation
 input_layer.nodes = np.array([0.1,0.2,0.2,0.4,0.5])
 hidden_layer = connect_in_hid.forward_propogation(input_layer)
 output_layer = connect_hid_out.forward_propogation(hidden_layer)
-print "INPUT LAYER:\n", input_layer.nodes
-print "CONNECTIONS INPUT->HIDDEN:\n", connect_in_hid.connections
-print "HIDDEN LAYER:\n", hidden_layer.nodes 
-print "CONNECTION HIDDEN->OUTPUT:\n", connect_hid_out.connections 
-print "OUTPUT LAYER\n", np.around(output_layer.nodes, decimals=2), "\n\n"    
+print("INPUT LAYER:\n", input_layer.nodes)
+print("CONNECTIONS INPUT->HIDDEN:\n", connect_in_hid.connections)
+print("HIDDEN LAYER:\n", hidden_layer.nodes) 
+print("CONNECTION HIDDEN->OUTPUT:\n", connect_hid_out.connections) 
+print("OUTPUT LAYER\n", np.around(output_layer.nodes, decimals=2), "\n\n")
